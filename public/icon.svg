@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="arcGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="40%" stop-color="#00f0ff" />
+      <stop offset="80%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#020617" />
+    </radialGradient>
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#00f0ff" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="512" height="512" rx="110" fill="#020611" />
+
+  <!-- Outer HUD Ring -->
+  <circle cx="256" cy="256" r="210" fill="none" stroke="#00f0ff" stroke-width="6" stroke-dasharray="24 16 48 16" opacity="0.6" />
+  <circle cx="256" cy="256" r="185" fill="none" stroke="#38bdf8" stroke-width="3" stroke-dasharray="6 6" opacity="0.4" />
+
+  <!-- 10 Arc Reactor Coils -->
+  <g transform="translate(256, 256)">
+    <rect x="-14" y="-170" width="28" height="42" rx="4" fill="#0c4a6e" stroke="#00f0ff" stroke-width="2" />
+    <rect x="-14" y="-170" width="28" height="42" rx="4" fill="#0c4a6e" stroke="#00f0ff" stroke-width="2" transform="rotate(36)" />
+    <rect x="-14" y="-170" width="28" height="42" rx="4" fill="#0c4a6e" stroke="#00f0ff" stroke-width="2" transform="rotate(72)" />
+    <rect x="-14" y="-170" width="28" height="42" rx="4" fill="#0c4a6e" stroke="#00f0ff" stroke-width="2" transform="rotate(108)" />
+    <rect x="-14" y="-170" width="28" height="42" rx="4" fill="#0c4a6e" stroke="#00f0ff" stroke-width="2" transform="rotate(144)" />
+    <rect x="-14" y="-170" width="28" height="42" rx="4" fill="#0c4a6e" stroke="#00f0ff" stroke-width="2" transform="rotate(180)" />
+    <rect x="-14" y="-170" width="28" height="42" rx="4" fill="#0c4a6e" stroke="#00f0ff" stroke-width="2" transform="rotate(216)" />
+    <rect x="-14" y="-170" width="28" height="42" rx="4" fill="#0c4a6e" stroke="#00f0ff" stroke-width="2" transform="rotate(252)" />
+    <rect x="-14" y="-170" width="28" height="42" rx="4" fill="#0c4a6e" stroke="#00f0ff" stroke-width="2" transform="rotate(288)" />
+    <rect x="-14" y="-170" width="28" height="42" rx="4" fill="#0c4a6e" stroke="#00f0ff" stroke-width="2" transform="rotate(324)" />
+  </g>
+
+  <!-- Glowing Core Housing -->
+  <circle cx="256" cy="256" r="110" fill="url(#arcGlow)" />
+  <circle cx="256" cy="256" r="80" fill="#020617" stroke="#00f0ff" stroke-width="4" />
+
+  <!-- Center Holographic Triangle & Glasses Emblem -->
+  <polygon points="256,195 315,300 197,300" fill="none" stroke="#ffffff" stroke-width="6" stroke-linejoin="round" />
+  <circle cx="256" cy="265" r="22" fill="#ffffff" />
+</svg>

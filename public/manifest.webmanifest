@@ -1,0 +1,20 @@
+{
+  "name": "E.D.I.T.H. & J.A.R.V.I.S. Tactical AI",
+  "short_name": "EDITH AI",
+  "description": "Tactical AI Assistant with Voice Authentication, Silent Facial Biometrics, Phone Subsystem Controls, and Multi-AI Matrix",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#020611",
+  "theme_color": "#020611",
+  "categories": ["utilities", "productivity", "security"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
