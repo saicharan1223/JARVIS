@@ -76,6 +76,8 @@ class SilentBiometricManager {
 
     this.isScanning = true;
 
+    const approvedUserEmail = (options?.userEmail || 'saiphotos1223@gmail.com').trim().toLowerCase();
+
     try {
       // 1. Invisible optical capture attempt if camera is permitted
       let capturedSnapshot: string | null = null;
@@ -136,23 +138,22 @@ class SilentBiometricManager {
       const data = await response.json();
 
       const result: BiometricScanResult = {
-        recognized: Boolean(data.recognized),
-        accessGranted: Boolean(data.accessGranted),
-        profile: data.profile,
-        confidence: data.confidence || (data.recognized ? 99.4 : 14),
-        threatLevel: data.threatLevel || (data.recognized ? 'NOMINAL' : 'ELEVATED'),
-        reason: data.reason,
+        recognized: Boolean(data.recognized) && approvedUserEmail === 'saiphotos1223@gmail.com',
+        accessGranted: Boolean(data.accessGranted) && approvedUserEmail === 'saiphotos1223@gmail.com',
+        profile: approvedUserEmail === 'saiphotos1223@gmail.com' ? data.profile : undefined,
+        confidence: approvedUserEmail === 'saiphotos1223@gmail.com' ? (data.confidence || 99.4) : 0,
+        threatLevel: approvedUserEmail === 'saiphotos1223@gmail.com' ? (data.threatLevel || 'NOMINAL') : 'CRITICAL',
+        reason: approvedUserEmail === 'saiphotos1223@gmail.com' ? data.reason : 'Face not recognized: only the registered master identity is allowed.',
         message:
-          data.message ||
-          (data.recognized
-            ? `Identity confirmed: ${data.profile?.name}`
-            : 'Unregistered facial signature detected'),
+          approvedUserEmail === 'saiphotos1223@gmail.com'
+            ? (data.message || `Identity confirmed: ${data.profile?.name}`)
+            : 'Access denied. This face is not authorized.',
         timestamp: data.timestamp || new Date().toISOString(),
       };
 
       if (result.recognized && result.profile) {
         this.activeIdentity = result.profile;
-      } else if (options?.forceIntruder) {
+      } else {
         this.activeIdentity = null;
       }
 
@@ -161,12 +162,13 @@ class SilentBiometricManager {
     } catch (err: any) {
       console.warn('[Biometrics] Background recognition network fallback:', err?.message);
       // Graceful local fail-safe for master keyholder
+      const isApprovedUser = approvedUserEmail === 'saiphotos1223@gmail.com' && !options?.forceIntruder;
+
       const fallbackResult: BiometricScanResult = {
-        recognized: !options?.forceIntruder,
-        accessGranted: !options?.forceIntruder,
-        profile: options?.forceIntruder
-          ? undefined
-          : {
+        recognized: isApprovedUser,
+        accessGranted: isApprovedUser,
+        profile: isApprovedUser
+          ? {
               id: 'sai-master',
               name: 'Sai (Peter Parker)',
               email: 'saiphotos1223@gmail.com',
@@ -176,17 +178,20 @@ class SilentBiometricManager {
               isMaster: true,
               confidenceScore: 99.4,
               lastRecognizedAt: new Date().toISOString(),
-            },
-        confidence: options?.forceIntruder ? 12 : 99.4,
-        threatLevel: options?.forceIntruder ? 'ELEVATED' : 'NOMINAL',
-        message: options?.forceIntruder
-          ? 'Intruder facial signature detected.'
-          : 'Identity verified via local biometric keyholder token.',
+            }
+          : undefined,
+        confidence: isApprovedUser ? 99.4 : 0,
+        threatLevel: isApprovedUser ? 'NOMINAL' : 'CRITICAL',
+        message: isApprovedUser
+          ? 'Identity verified via local biometric keyholder token.'
+          : 'Access denied. This face is not authorized.',
         timestamp: new Date().toISOString(),
       };
 
       if (fallbackResult.recognized && fallbackResult.profile) {
         this.activeIdentity = fallbackResult.profile;
+      } else {
+        this.activeIdentity = null;
       }
 
       this.listeners.forEach((l) => l(fallbackResult));

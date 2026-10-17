@@ -14,6 +14,7 @@ import {
   Lock,
   Eye,
   UserCheck,
+  Smartphone,
 } from 'lucide-react';
 import { sound } from '../utils/soundEffects';
 import { PWAInstallButton } from './PWAInstallButton';
